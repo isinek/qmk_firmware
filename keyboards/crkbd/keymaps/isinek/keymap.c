@@ -27,7 +27,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
 	KC_LSFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSFT,
 //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-				                          KC_LCTL,   MO(2),  KC_SPC,     KC_ENT,   MO(1), KC_RALT
+				                          KC_LCTL,   MO(2),  KC_SPC,     KC_ENT,   MO(1), KC_LALT
 				                      //`--------------------------'  `--------------------------'
 
     ),
@@ -38,9 +38,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
 	 KC_TAB, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_LEFT, KC_DOWN,   KC_UP,KC_RIGHT, XXXXXXX,  KC_INS,
 //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-	KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_RSFT,
+	KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_L,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_RSFT,
 //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-				                          KC_LCTL, MO(3),   KC_LGUI,    KC_RALT, KC_TRNS,  KC_APP
+				                          KC_LCTL, MO(3),   KC_LGUI,    KC_LALT, KC_TRNS,  KC_APP
 				                      //`--------------------------'  `--------------------------'
     ),
 
@@ -52,7 +52,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
 	KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PGDN,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_RSFT,
 //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-				                          KC_LCTL, KC_TRNS, KC_LGUI,    KC_RALT,   MO(3),  KC_APP
+				                          KC_LCTL, KC_TRNS, KC_LGUI,    KC_LALT,   MO(3),  KC_APP
 				                      //`--------------------------'  `--------------------------'
     ),
 
@@ -312,22 +312,6 @@ static void render_luna(int LUNA_X, int LUNA_Y)
 static void print_logo_narrow(void)
 {
     // render_logo();
-    if (current_wpm > 0) {
-    	anim_sleep = timer_read32();
-    	/* wpm counter */
-    	oled_set_cursor(0, 14);
-    	oled_write(" ", false);
-    	oled_write(get_u8_str(get_current_wpm(), '0'), false);
-
-    	oled_set_cursor(0, 15);
-    	oled_write(" wpm", false);
-        /* this fixes the screen on and off bug */
-	} else if(timer_elapsed32(anim_sleep) > OLED_TIMEOUT) {
-		/* clear */
-		oled_set_cursor(0, 0);
-		oled_write("                                                                                                                        ", false);
-		oled_off();
-	}
 }
 
 static void print_status_narrow(void)
@@ -335,7 +319,7 @@ static void print_status_narrow(void)
 	/* Print current layer */
 	oled_write("LAYER", false);
 
-	oled_set_cursor(0, 6);
+	oled_set_cursor(0, 3);
 
 	switch (get_highest_layer(layer_state)) {
 		case 0:
@@ -353,6 +337,13 @@ static void print_status_narrow(void)
 		default:
 			oled_write("Undef", false);
 	}
+
+    /* wpm counter */
+    oled_set_cursor(0, 7);
+    oled_write(" ", false);
+    oled_write(get_u8_str(get_current_wpm(), '0'), false);
+    oled_set_cursor(0, 8);
+    oled_write(" wpm", false);
 
 	render_luna(0, 13);
 }
