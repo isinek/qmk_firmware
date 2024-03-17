@@ -23,9 +23,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define MASTER_LEFT
 
-#define OLED_FONT_H "keyboards/crkbd/lib/glcdfont.c"
-#define OLED_TIMEOUT 120000
+#define OLED_FONT_H     "keyboards/crkbd/lib/glcdfont.c"
+#define OLED_TIMEOUT    120000
 #define OLED_BRIGHTNESS 120
+#define TAPPING_TERM    175
 
 #define SPLIT_WPM_ENABLE
 
